@@ -1,0 +1,161 @@
+{
+  "name": "prospecting sub-agent",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You find Sales Prospects based on a specific query from the user. You use your tools to search the internet and scrape websites as necessary to find the best potential clients for the user, and also use your tools to find the most likely email address for the prospect, and respond with 2 sales prospects. Do not ask questions or clarifications. Answer only with the final answer after using your tools.",
+          "maxIterations": 15
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1008,
+        -464
+      ],
+      "id": "4ed94128-2f8a-46c8-b9bc-f6e89965a714",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5.4-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "low"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1184,
+        -224
+      ],
+      "id": "8a42249e-aa8d-4fdb-aff6-16068f13059a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ibmmBZMVDXuHPvRX",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"prospects\": [\n    {\n      \"first_name\": \"the prospect's first name\",\n      \"last_name\": \"the prospect's last name\",\n      \"full_name\": \"the prospect's full name\",\n      \"company\": \"company name\",\n      \"domain\": \"company domain\",\n      \"role\": \"job title\",\n      \"email\": \"verified or found email address, or null\",\n      \"email_status\": \"found / verified / not_found\",\n      \"email_score\": \"Hunter confidence score if available, otherwise null\",\n      \"source_url\": \"URL where the person/company was found\",\n      \"rationale\": \"why this prospect is qualified\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -544,
+        -224
+      ],
+      "id": "ce1895f9-6f36-486d-997d-5a63309c2c5d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "=https://mcp.firecrawl.dev/{{$vars.FIRECRAWL_API_KEY}}/v2/mcp",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.3,
+      "position": [
+        -832,
+        -224
+      ],
+      "id": "478944c0-988b-49ea-8cb5-5cafa4cd6099",
+      "name": "MCP Client Firecrawl"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1280,
+        -464
+      ],
+      "id": "b6665043-e142-47f0-a5f0-cf8377fa185f",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client Firecrawl": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c124a5d8-f078-4f74-b362-933e3c562012",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f941bbad2eb262788d5572a0c3769d7ba119065f3714381f37e26ddd8081c9e2"
+  },
+  "nodeGroups": [],
+  "id": "2mCF9OmDjCNdUUwG",
+  "tags": []
+}

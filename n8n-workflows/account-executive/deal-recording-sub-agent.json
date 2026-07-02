@@ -1,0 +1,331 @@
+{
+  "name": "Deal Recording Sub-Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.name }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are provided with the potential name of a person in the Pipedrive database. You use your tools to see whether that person is already in the database. If there are duplicates, pick one. Reply with the details you find; a Deal will be created in Pipedrive as a result."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -288,
+        -80
+      ],
+      "id": "e72e3958-7cd9-475d-a598-b09f300bc52f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "builtInTools": {},
+        "options": {
+          "reasoningEffort": "low"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -400,
+        128
+      ],
+      "id": "cbdac919-765a-45c6-995b-8c6ad854f2a6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ibmmBZMVDXuHPvRX",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "person",
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.pipedriveTool",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        128
+      ],
+      "id": "214b7e2c-d3b8-4687-86ba-2cffbec1f0cb",
+      "name": "Get many persons in Pipedrive",
+      "credentials": {
+        "pipedriveApi": {
+          "id": "VRKbB5jdCL3264p9",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"found\": true,\n  \"id\": 10,\n  \"company\": \"company name here\",\n  \"name\": \"person name here\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        144
+      ],
+      "id": "a0556e89-e8d8-4bc4-9029-41dc276fb368",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b95c28d5-a1a1-49af-b0df-c2d2ad85ef92",
+              "leftValue": "={{ $json.output.found }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "e5e5faf5-0a88-4513-96b8-d63fbd8de090",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.output.name }} Deal",
+        "associateWith": "person",
+        "person_id": "={{ Number($json.output.id) }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.pipedrive",
+      "typeVersion": 2,
+      "position": [
+        384,
+        -96
+      ],
+      "id": "741ef717-9a6a-44d1-bc08-2b2e7b4ce144",
+      "name": "Create a deal",
+      "credentials": {
+        "pipedriveApi": {
+          "id": "VRKbB5jdCL3264p9",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "userKey": "u25j5ceatut84njhkau3gfxdc25rb3",
+        "message": "Success in creating deal",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.pushover",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -96
+      ],
+      "id": "9d36941c-a64f-41e3-b75e-88bfc82e889c",
+      "name": "Push a message",
+      "credentials": {
+        "pushoverApi": {
+          "id": "7gn0K5al9VjZ5sEM",
+          "name": "Pushover account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "userKey": "u25j5ceatut84njhkau3gfxdc25rb3",
+        "message": "Fail in creating deal",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.pushover",
+      "typeVersion": 1,
+      "position": [
+        384,
+        96
+      ],
+      "id": "e38aaf67-54f2-4044-ab4d-be9c1bac25d5",
+      "name": "Push a message1",
+      "credentials": {
+        "pushoverApi": {
+          "id": "7gn0K5al9VjZ5sEM",
+          "name": "Pushover account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Find in Pipedrive",
+        "height": 432,
+        "width": 528
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "f64061ae-cdd8-483d-8cc1-6fe42f45563d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Record a deal",
+        "height": 432,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "4356fc50-8319-44fc-85b4-f746973f9043",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c4e291af-c5ed-40a2-b8cb-dd86898f001e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -656,
+        -80
+      ],
+      "id": "208bb029-f054-4820-b580-9daf1e903e77",
+      "name": "Webhook",
+      "webhookId": "c4e291af-c5ed-40a2-b8cb-dd86898f001e"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many persons in Pipedrive": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create a deal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Push a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a deal": {
+      "main": [
+        [
+          {
+            "node": "Push a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6c83173e-1af7-4e1e-81f6-ddb8acc0a7eb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f941bbad2eb262788d5572a0c3769d7ba119065f3714381f37e26ddd8081c9e2"
+  },
+  "nodeGroups": [],
+  "id": "rim7cphhtFsn8tkY",
+  "tags": []
+}
