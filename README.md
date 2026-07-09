@@ -32,9 +32,6 @@ The solution is built primarily with **n8n** workflows and integrates with sever
 
 [![Watch the Demo](screenshots/demo-thumbnail.jpg)](https://youtu.be/a0lKHLA0SJA)
 
-▶ Watch the full demo on YouTube:  
-https://youtu.be/a0lKHLA0SJA
-
 This video demonstrates the complete AI sales automation pipeline, including:
 
 - Loading an Ideal Customer Profile (ICP)
