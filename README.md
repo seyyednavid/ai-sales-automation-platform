@@ -12,11 +12,11 @@
 
 This project demonstrates a complete AI-driven sales automation system built around workflow orchestration.
 
-The platform automates the complete sales lifecycle:
+The platform automates the full sales lifecycle, including:
 
 - Finding companies that match an Ideal Customer Profile (ICP)
 - Identifying qualified decision makers
-- Recording and updating CRM contacts
+- Creating and updating CRM contacts
 - Generating personalized outreach emails
 - Handling inbound customer calls
 - Recording sales opportunities
@@ -26,7 +26,29 @@ The solution is built primarily with **n8n** workflows and integrates with sever
 
 ---
 
-# Features
+## Demo
+
+🎥 **End-to-End Project Walkthrough**
+
+This video demonstrates the complete AI sales automation pipeline, including:
+
+- Loading an Ideal Customer Profile (ICP)
+- Running the Business Development workflow
+- Discovering qualified companies and decision makers
+- Creating contacts in Pipedrive CRM
+- Generating personalized Gmail outreach drafts
+- Handling an inbound customer phone call
+- Recording a sales opportunity
+- Scheduling a product demonstration
+- Creating a Google Calendar event
+
+▶ **Watch the full demo on YouTube:**
+
+https://youtu.be/a0IKHLA0SJA
+
+---
+
+## Features
 
 ### Outbound Sales Automation
 
@@ -47,7 +69,7 @@ The solution is built primarily with **n8n** workflows and integrates with sever
 
 ---
 
-# Project Structure
+## Project Structure
 
 ```text
 AI-SALES-AUTOMATION-PLATFORM
@@ -83,35 +105,33 @@ AI-SALES-AUTOMATION-PLATFORM
 
 ---
 
-# System Architecture
+## System Architecture
 
 The platform consists of two independent automation pipelines that together cover both outbound prospecting and inbound customer engagement.
 
-- **Business Development Pipeline**
-  - Finds qualified prospects
-  - Creates or updates CRM contacts
-  - Generates personalized outreach emails
+### Business Development Pipeline
 
-- **Account Executive Pipeline**
-  - Handles inbound customer requests
-  - Records sales opportunities
-  - Schedules product demonstrations
+- Finds qualified prospects
+- Creates or updates CRM contacts
+- Generates personalized outreach emails
 
-The overall architecture is illustrated below.
+### Account Executive Pipeline
 
-<p align="center">
-  <img src="architecture/system-architecture.png" width="100%">
-</p>
+- Handles inbound customer requests
+- Records sales opportunities
+- Schedules product demonstrations
+
+For more details, see [`architecture/architecture.md`](architecture/architecture.md).
 
 ---
 
-# Workflow Overview
+## Workflow Overview
 
-## Business Development Manager
+### Business Development Manager
 
 Acts as the main orchestrator of the outbound pipeline.
 
-Responsibilities:
+**Responsibilities:**
 
 - Coordinates all outbound workflows
 - Passes data between workflows
@@ -119,107 +139,105 @@ Responsibilities:
 - Returns the final sales-ready prospects
 
 <p align="center">
-<img src="screenshots/business-development-manager-workflow.jpg" width="95%">
+  <img src="screenshots/business-development-manager-workflow.jpg" width="95%">
 </p>
 
 ---
 
-## Prospecting Sub-Agent
+### Prospecting Sub-Agent
 
 Searches for organizations that match the Ideal Customer Profile.
 
-Responsibilities
+**Responsibilities:**
 
-- Find matching companies
-- Identify decision makers
-- Collect contact information
-- Return qualified leads
+- Finds matching companies
+- Identifies decision makers
+- Collects contact information
+- Returns qualified leads
 
-Output
+**Output:**
 
 - Company
-- Contact Name
-- Job Title
-- Email Address
+- Contact name
+- Job title
+- Email address
 
 <p align="center">
-<img src="screenshots/prospecting-sub-agent-workflow.jpg" width="95%">
+  <img src="screenshots/prospecting-sub-agent-workflow.jpg" width="95%">
 </p>
 
 ---
 
-## RevOps Sub-Agent
+### RevOps Sub-Agent
 
 Synchronizes prospect information with the CRM.
 
-Responsibilities
+**Responsibilities:**
 
-- Search existing contacts
-- Prevent duplicates
-- Create new contacts
-- Update existing contacts
+- Searches existing contacts
+- Prevents duplicates
+- Creates new contacts
+- Updates existing contacts
 
 <p align="center">
-<img src="screenshots/revops-sub-agent-workflow.jpg" width="95%">
+  <img src="screenshots/revops-sub-agent-workflow.jpg" width="95%">
 </p>
 
 ---
 
-## SDR Sub-Agent
+### SDR Sub-Agent
 
 Creates personalized outreach emails.
 
-Responsibilities
+**Responsibilities:**
 
-- Generate email subject
-- Generate personalized email body
-- Save draft in Gmail
+- Generates email subjects
+- Generates personalized email bodies
+- Saves drafts in Gmail
 
 <p align="center">
-<img src="screenshots/sdr-sub-agent-workflow.jpg" width="95%">
+  <img src="screenshots/sdr-sub-agent-workflow.jpg" width="95%">
 </p>
 
 ---
 
-## Deal Recording Sub-Agent
+### Deal Recording Sub-Agent
 
 Records inbound callers as sales opportunities.
 
-Responsibilities
+**Responsibilities:**
 
-- Create a new Deal
-- Associate the deal with an existing contact
-- Update CRM records
+- Creates a new deal
+- Associates the deal with an existing contact
+- Updates CRM records
 
 <p align="center">
-<img src="screenshots/deal-recording-sub-agent-workflow.jpg" width="95%">
+  <img src="screenshots/deal-recording-sub-agent-workflow.jpg" width="95%">
 </p>
 
 ---
 
-## Demo Booking Sub-Agent
+### Demo Booking Sub-Agent
 
 Schedules product demonstrations.
 
-Responsibilities
+**Responsibilities:**
 
-- Create calendar event
-- Reserve requested time slot
-- Return booking confirmation
+- Creates calendar events
+- Reserves requested time slots
+- Returns booking confirmations
 
 <p align="center">
-<img src="screenshots/demo-booking-sub-agent-workflow.jpg" width="95%">
+  <img src="screenshots/demo-booking-sub-agent-workflow.jpg" width="95%">
 </p>
 
 ---
 
-# Integrations
+## Integrations
 
-## CRM
+### CRM — Pipedrive
 
-### Pipedrive
-
-Used for
+Used for:
 
 - Contact management
 - Organization management
@@ -227,63 +245,59 @@ Used for
 - Activity tracking
 
 <p align="center">
-<img src="screenshots/pipedrive-crm.jpg" width="90%">
+  <img src="screenshots/pipedrive-crm.jpg" width="90%">
 </p>
 
 ---
 
-## Email
+### Email — Gmail
 
-### Gmail
-
-Used for
+Used for:
 
 - Personalized outreach drafts
 - Sales email preparation
 
 <p align="center">
-<img src="screenshots/gmail-draft.jpg" width="80%">
+  <img src="screenshots/gmail-draft.jpg" width="80%">
 </p>
 
 ---
 
-## Scheduling
+### Scheduling — Google Calendar
 
-### Google Calendar
-
-Used for
+Used for:
 
 - Demo scheduling
 - Meeting creation
 - Appointment management
 
 <p align="center">
-<img src="screenshots/google-calendar-demo.jpg" width="90%">
+  <img src="screenshots/google-calendar-demo.jpg" width="90%">
 </p>
 
 ---
 
-## Voice Configuration
+### Voice Configuration
 
 The account executive configuration exposes the automation tools required for recording customer opportunities and scheduling demonstrations.
 
 <p align="center">
-<img src="screenshots/account-executive-agent-configuration.jpg" width="95%">
+  <img src="screenshots/account-executive-agent-configuration.jpg" width="95%">
 </p>
 
 ---
 
-## Available Tools
+### Available Tools
 
 The account executive can invoke dedicated automation tools during customer interactions.
 
 <p align="center">
-<img src="screenshots/account-executive-tools.jpg" width="95%">
+  <img src="screenshots/account-executive-tools.jpg" width="95%">
 </p>
 
 ---
 
-# Technologies
+## Technologies
 
 | Category | Technologies |
 |----------|--------------|
@@ -297,25 +311,25 @@ The account executive can invoke dedicated automation tools during customer inte
 
 ---
 
-# Documentation
+## Documentation
 
 Additional documentation can be found in the `docs` directory.
 
 | File | Description |
 |------|-------------|
-| architecture.md | Platform architecture |
-| workflow-overview.md | Description of each workflow |
-| integrations.md | Connected services |
-| setup.md | Setup instructions |
+| [`architecture.md`](architecture/architecture.md) | Platform architecture |
+| [`workflow-overview.md`](docs/workflow-overview.md) | Description of each workflow |
+| [`integrations.md`](docs/integrations.md) | Connected services |
+| [`setup.md`](docs/setup.md) | Setup instructions |
 
 ---
 
-# Getting Started
+## Getting Started
 
 1. Clone the repository.
 
 ```bash
-git clone https://github.com/<username>/ai-sales-automation-platform.git
+git clone https://github.com/seyyednavid/ai-sales-automation-platform.git
 ```
 
 2. Import the workflows into n8n.
@@ -328,7 +342,7 @@ git clone https://github.com/<username>/ai-sales-automation-platform.git
 
 ---
 
-# Environment Variables
+## Environment Variables
 
 Create a `.env` file using `.env.example`.
 
@@ -344,7 +358,7 @@ TWILIO_AUTH_TOKEN=
 
 ---
 
-# Future Improvements
+## Future Improvements
 
 - Automatic lead scoring
 - CRM analytics dashboard
@@ -356,7 +370,7 @@ TWILIO_AUTH_TOKEN=
 
 ---
 
-# Author
+## Author
 
 **Navid Hejazi**
 
