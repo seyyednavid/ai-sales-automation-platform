@@ -44,7 +44,7 @@ This video demonstrates the complete AI sales automation pipeline, including:
 
 ▶ **Watch the full demo on YouTube:**
 
-https://youtu.be/a0IKHLA0SJA
+https://youtu.be/a0lKHLA0SJA 
 
 ---
 
